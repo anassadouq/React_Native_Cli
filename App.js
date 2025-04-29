@@ -1,8 +1,11 @@
 import React from 'react';
-import Index from './app/index';
+import { NavigationContainer } from '@react-navigation/native';
+import StackNavigator from './navigation/StackNavigator';
 
-const App = () => {
-  return <Index />;
-};
-
-export default App;
+export default function App() {
+  return (
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
+  );
+}
