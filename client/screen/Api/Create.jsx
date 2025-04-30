@@ -19,7 +19,7 @@ const Create = ({ navigation }) => {
     },
     onSuccess: () => {
       Alert.alert('Succès', 'Client ajouté avec succès');
-      queryClient.invalidateQueries({ queryKey: ['clients'] });
+      queryClient.invalidateQueries({ queryKey: ['client'] });
       navigation.goBack(); // Retour à la liste
     },
     onError: (error) => {

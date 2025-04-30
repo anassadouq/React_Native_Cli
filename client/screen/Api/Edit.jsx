@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } fr
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const apiBase = 'http://10.0.2.2:8000/api/client';
+const api = 'http://10.0.2.2:8000/api/client';
 
 const Edit = ({ route, navigation }) => {
   const { client } = route.params;
@@ -16,12 +16,12 @@ const Edit = ({ route, navigation }) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (updatedClient) => {
-      const response = await axios.put(`${apiBase}/${client.id}`, updatedClient);
+      const response = await axios.put(`${api}/${client.id}`, updatedClient);
       return response.data;
     },
     onSuccess: () => {
       Alert.alert('Succès', 'Client mis à jour avec succès');
-      queryClient.invalidateQueries({ queryKey: ['clients'] });
+      queryClient.invalidateQueries({ queryKey: ['client'] });
       navigation.goBack();
     },
     onError: (error) => {
@@ -47,21 +47,18 @@ const Edit = ({ route, navigation }) => {
       <Text style={styles.title}>Modifier le client</Text>
 
       <TextInput
-        placeholder="Prénom"
         value={prenom}
         onChangeText={setPrenom}
         style={styles.input}
       />
 
       <TextInput
-        placeholder="Nom"
         value={nom}
         onChangeText={setNom}
         style={styles.input}
       />
 
       <TextInput
-        placeholder="Téléphone"
         value={tel}
         onChangeText={setTel}
         keyboardType="phone-pad"
