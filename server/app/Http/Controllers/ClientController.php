@@ -16,7 +16,7 @@ class ClientController extends Controller
     {
         $validated = $request->validate([
             'nom' => 'required',
-            'prenom' => 'required|image|mimes:jpeg,png,jpg',
+            'prenom' => 'required',
             'tel' => 'required',
         ]);
 
@@ -48,6 +48,7 @@ class ClientController extends Controller
             'prenom' => 'required',
             'tel' => 'required',
         ]);
+        $client->update($validated);
 
         return response()->json([
             'message' => 'client updated successfully',
