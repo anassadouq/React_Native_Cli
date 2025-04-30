@@ -16,9 +16,9 @@ export default function StackNavigator() {
                 contentStyle: { backgroundColor: 'white' }
             }}
         >
-            <Stack.Screen name="Liste" component={Liste} />
-            <Stack.Screen name="Create" component={Create} />
-            <Stack.Screen name="Edit" component={Edit} />
+            <Stack.Screen name="liste" component={Liste} />
+            <Stack.Screen name="create" component={Create} />
+            <Stack.Screen name="edit" component={Edit} />
             
             {/* <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="MovieDetail" component={MovieDetail} /> */}

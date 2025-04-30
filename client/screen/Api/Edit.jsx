@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-// ⚠ Use 10.0.2.2 for Android emulator
 const apiBase = 'http://10.0.2.2:8000/api/client';
 
 const Edit = ({ route, navigation }) => {
@@ -12,28 +12,38 @@ const Edit = ({ route, navigation }) => {
   const [prenom, setPrenom] = useState(client.prenom);
   const [tel, setTel] = useState(client.tel);
 
-  const handleUpdate = async () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (updatedClient) => {
+      const response = await axios.put(`${apiBase}/${client.id}`, updatedClient);
+      return response.data;
+    },
+    onSuccess: () => {
+      Alert.alert('Succès', 'Client mis à jour avec succès');
+      queryClient.invalidateQueries({ queryKey: ['clients'] });
+      navigation.goBack();
+    },
+    onError: (error) => {
+      console.error(error);
+      Alert.alert('Erreur', "La mise à jour a échoué");
+    }
+  });
+
+  const handleUpdate = () => {
     if (!nom || !prenom || !tel) {
       Alert.alert('Erreur', 'Tous les champs sont requis');
       return;
     }
 
-    try {
-      await axios.put(`${apiBase}/${client.id}`, {
-        nom,
-        prenom,
-        tel,
-      });
-      Alert.alert('Succès', 'Client mis à jour avec succès');
-      navigation.goBack();
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Erreur', "La mise à jour a échoué");
-    }
+    mutate({ nom, prenom, tel });
   };
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text>← Back</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Modifier le client</Text>
 
       <TextInput
@@ -54,10 +64,11 @@ const Edit = ({ route, navigation }) => {
         placeholder="Téléphone"
         value={tel}
         onChangeText={setTel}
+        keyboardType="phone-pad"
         style={styles.input}
       />
 
-      <Button title="Update" onPress={handleUpdate} />
+      <Button title={isPending ? "Mise à jour..." : "Update"} onPress={handleUpdate} disabled={isPending} />
     </View>
   );
 };

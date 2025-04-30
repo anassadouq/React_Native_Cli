@@ -1,30 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import React from 'react';
+import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-// Use 10.0.2.2 for Android emulator
 const api = 'http://10.0.2.2:8000/api/client';
 
+const fetchClients = async () => {
+    const response = await axios.get(api);
+    return response.data;
+};
+
 const Liste = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
+    const queryClient = useQueryClient();
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(api);
-            setData(response.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const { data, isLoading, isError, refetch } = useQuery({
+        queryKey: ['client'],
+        queryFn: fetchClients,
+    });
 
     const handleDelete = (id) => {
         Alert.alert(
@@ -38,8 +32,7 @@ const Liste = () => {
                     onPress: async () => {
                         try {
                             await axios.delete(`${api}/${id}`);
-                            // Met à jour la liste
-                            fetchData();
+                            queryClient.invalidateQueries({ queryKey: ['client'] }); // rafraîchir la liste
                         } catch (error) {
                             console.error('Erreur lors de la suppression:', error);
                             Alert.alert("Erreur", "Impossible de supprimer le client.");
@@ -50,9 +43,12 @@ const Liste = () => {
         );
     };
 
+    if (isLoading) return <ActivityIndicator style={{ marginTop: 40 }} />;
+    if (isError) return <Text style={{ marginTop: 40 }}>Erreur lors du chargement.</Text>;
+
     return (
         <View style={{ padding: 40 }}>
-            <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+            <TouchableOpacity onPress={() => navigation.navigate('create')}>
                 <Text style={{ marginBottom: 10, color: 'green' }}>Create</Text>
             </TouchableOpacity>
 
@@ -66,7 +62,7 @@ const Liste = () => {
                         <Text style={{ flex: 1 }}>{item.prenom} ({item.nom})</Text>
                         <Text style={{ flex: 1 }}>{item.tel}</Text>
 
-                        <TouchableOpacity onPress={() => navigation.navigate('Edit', { client: item })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('edit', { client: item })}>
                             <Text style={{ color: 'blue', marginRight: 10 }}>Edit</Text>
                         </TouchableOpacity>
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-// ⚠ Use 10.0.2.2 for Android emulator
 const api = 'http://10.0.2.2:8000/api/client';
 
 const Create = ({ navigation }) => {
@@ -10,28 +10,38 @@ const Create = ({ navigation }) => {
   const [prenom, setPrenom] = useState('');
   const [tel, setTel] = useState('');
 
-  const handleSubmit = async () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (newClient) => {
+      const response = await axios.post(api, newClient);
+      return response.data;
+    },
+    onSuccess: () => {
+      Alert.alert('Succès', 'Client ajouté avec succès');
+      queryClient.invalidateQueries({ queryKey: ['clients'] });
+      navigation.goBack(); // Retour à la liste
+    },
+    onError: (error) => {
+      console.error(error);
+      Alert.alert('Erreur', "Impossible d'ajouter le client");
+    }
+  });
+
+  const handleSubmit = () => {
     if (!nom || !prenom || !tel) {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs');
       return;
     }
 
-    try {
-      await axios.post(api, {
-        nom,
-        prenom,
-        tel,
-      });
-      Alert.alert('Succès', 'Client ajouté avec succès');
-      navigation.goBack(); // Retour à la page précédente (liste)
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Erreur', "Impossible d'ajouter le client");
-    }
+    mutate({ nom, prenom, tel });
   };
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text>← Back</Text>
+      </TouchableOpacity>
       <Text style={styles.title}>Ajouter un nouveau client</Text>
 
       <TextInput
@@ -56,7 +66,7 @@ const Create = ({ navigation }) => {
         style={styles.input}
       />
 
-      <Button title="Create" onPress={handleSubmit} />
+      <Button title={isPending ? "Création en cours..." : "Create"} onPress={handleSubmit} disabled={isPending} />
     </View>
   );
 };
