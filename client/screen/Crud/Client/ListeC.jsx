@@ -48,7 +48,7 @@ const Liste = () => {
 
     return (
         <View style={{ padding: 40 }}>
-            <TouchableOpacity onPress={() => navigation.navigate('create')}>
+            <TouchableOpacity onPress={() => navigation.navigate('createC')}>
                 <Text style={{ marginBottom: 10, color: 'green' }}>Create</Text>
             </TouchableOpacity>
 
@@ -66,7 +66,7 @@ const Liste = () => {
 
                         <Text style={{ flex: 1 }}>{item.tel}</Text>
 
-                        <TouchableOpacity onPress={() => navigation.navigate('edit', { client: item })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('editC', { client: item })}>
                             <Text style={{ color: 'blue', marginRight: 10 }}>Edit</Text>
                         </TouchableOpacity>
 

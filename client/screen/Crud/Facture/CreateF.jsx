@@ -38,6 +38,10 @@ const CreateF = () => {
 
     return (
       <View style={{ padding: 40 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text>← Back</Text>
+        </TouchableOpacity>
+
         <Text>Créer une facture pour le client #{client_id}</Text>
 
         <TextInput
