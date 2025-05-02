@@ -1,12 +1,12 @@
 import { View, Text, Image, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import MovieCard from '../components/MovieCard';
+import MovieCard from '../../components/MovieCard';
 import { useNavigation } from '@react-navigation/native';
 
 const API_KEY = "4b00c2d4c87b870452b613c694f57a91";
 
-export default function Home() {
+export default function Movies() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,7 +66,10 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'black' },
+  container: { 
+    flex: 1, 
+    backgroundColor: 'black' 
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
