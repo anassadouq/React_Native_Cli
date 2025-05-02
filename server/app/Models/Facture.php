@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\Facture;
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Client extends Model
+class Facture extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nom',
-        'prenom',
-        'tel'
+        'client_id',
+        'num',
+        'date'
     ];
 
-    public function facture()
+    public function client()
     {
-        return $this->hasMany(Facture::class, 'client_id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
 }
