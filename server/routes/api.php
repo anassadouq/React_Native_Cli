@@ -11,7 +11,7 @@ Route::resource('client', ClientController::class);
 
 // Facture
 Route::resource('facture', FactureController::class);
-Route::get('facture/show/{client_id}', [FactureController::class, 'show']);
+Route::get('facture/{client_id}', [FactureController::class, 'show']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -2,9 +2,16 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MovieDetail from '../screen/Movies/MovieDetail';
 import BottomTabs from './BottomTabs';
-import Liste from '../screen/Crud/Liste';
-import Create from '../screen/Crud/Create';
-import Edit from '../screen/Crud/Edit';
+
+// Client
+import ListeC from '../screen/Crud/Client/ListeC';
+import CreateC from '../screen/Crud/Client/CreateC';
+import EditC from '../screen/Crud/Client/EditC';
+
+// Facture
+import ListeF from '../screen/Crud/Facture/ListeF';
+import CreateF from '../screen/Crud/Facture/CreateF';
+import EditF from '../screen/Crud/Facture/EditF';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,10 +24,17 @@ export default function StackNavigator() {
             }}
         >            
             <Stack.Screen name="Main" component={BottomTabs} />
-            <Stack.Screen name="MovieDetail" component={MovieDetail} /> 
-            <Stack.Screen name="liste" component={Liste} />
-            <Stack.Screen name="create" component={Create} />
-            <Stack.Screen name="edit" component={Edit} />   
+            <Stack.Screen name="MovieDetail" component={MovieDetail} />
+
+            {/*  Client */}
+            <Stack.Screen name="listeC" component={ListeC} />
+            <Stack.Screen name="createC" component={CreateC} />
+            <Stack.Screen name="editC" component={EditC} />
+
+            {/*  Facture */}
+            <Stack.Screen name="listeF" component={ListeF} />
+            <Stack.Screen name="createF" component={CreateF} />
+            <Stack.Screen name="editF" component={EditF} />
         </Stack.Navigator>
     );
 }

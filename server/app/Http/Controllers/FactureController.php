@@ -10,8 +10,8 @@ class FactureController extends Controller
 {
     public function index()
     {
-        $wortschatzs = Facture::all();
-        return response()->json($wortschatzs);
+        $facture = Facture::all();
+        return response()->json($facture);
     }
 
     public function store(Request $request)
@@ -23,8 +23,8 @@ class FactureController extends Controller
     public function show($client_id)
     {
         $client = Client::find($client_id);
-        $facture = Facture::where('client_id', $client_id)->get();
-    
+        return Facture::where('client_id', $client_id)->get();
+            
         return response()->json(['client' => $client, 'facture' => $facture]);
     }
 

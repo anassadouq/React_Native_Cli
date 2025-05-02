@@ -59,7 +59,11 @@ const Liste = () => {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-                        <Text style={{ flex: 1 }}>{item.prenom} {item.nom}</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('listeF', { client_id: item.id })}>
+                            <Text style={{ flex: 1 }}>{item.prenom} {item.nom}</Text>
+                        </TouchableOpacity>
+
+
                         <Text style={{ flex: 1 }}>{item.tel}</Text>
 
                         <TouchableOpacity onPress={() => navigation.navigate('edit', { client: item })}>
