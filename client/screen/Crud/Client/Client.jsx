@@ -11,7 +11,7 @@ const fetchClients = async () => {
     return response.data;
 };
 
-const Liste = () => {
+const Client = () => {
     const navigation = useNavigation();
     const queryClient = useQueryClient();
 
@@ -48,7 +48,7 @@ const Liste = () => {
 
     return (
         <View style={{ padding: 40 }}>
-            <TouchableOpacity onPress={() => navigation.navigate('createC')}>
+            <TouchableOpacity onPress={() => navigation.navigate('create_client')}>
                 <Text style={{ marginBottom: 10, color: 'green' }}>Create</Text>
             </TouchableOpacity>
 
@@ -59,14 +59,14 @@ const Liste = () => {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('listeF', { client_id: item.id })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('facture', { client_id: item.id })}>
                             <Text style={{ flex: 1 }}>{item.prenom} {item.nom}</Text>
                         </TouchableOpacity>
 
 
                         <Text style={{ flex: 1 }}>{item.tel}</Text>
 
-                        <TouchableOpacity onPress={() => navigation.navigate('editC', { client: item })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('edit_client', { client: item })}>
                             <Text style={{ color: 'blue', marginRight: 10 }}>Edit</Text>
                         </TouchableOpacity>
 
@@ -80,4 +80,4 @@ const Liste = () => {
     );
 };
 
-export default Liste;
+export default Client;

@@ -4,39 +4,39 @@ import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const ListeF = () => {
+const DetailFacture = () => {
   const route = useRoute();
-  const { client_id } = route.params;
+  const { facture_id } = route.params;
   const navigation = useNavigation();
   const queryClient = useQueryClient();
 
-  const api = `http://10.0.2.2:8000/api/facture/${client_id}`;
+  const api = `http://10.0.2.2:8000/api/detail_facture/${facture_id}`;
 
-  const fetchFacture = async () => {
+  const fetchDetailFacture = async () => {
     const response = await axios.get(api);
     return response.data;
   };
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['facture', client_id],
-    queryFn: fetchFacture,
+    queryKey: ['detail_facture', facture_id],
+    queryFn: fetchDetailFacture,
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => axios.delete(`http://10.0.2.2:8000/api/facture/${id}`),
+    mutationFn: (id) => axios.delete(`http://10.0.2.2:8000/api/detail_facture/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['facture', client_id] });
+      queryClient.invalidateQueries({ queryKey: ['detail_facture', facture_id] });
     },
     onError: (error) => {
       console.error('Erreur lors de la suppression :', error);
-      Alert.alert("Erreur", "Impossible de supprimer la facture.");
+      Alert.alert("Erreur", "Impossible de supprimer le detail.");
     },
   });
 
   const confirmDelete = (id) => {
     Alert.alert(
       "Confirmer la suppression",
-      "Voulez-vous vraiment supprimer cette facture ?",
+      "Voulez-vous vraiment supprimer ça ?",
       [
         { text: "Annuler", style: "cancel" },
         {
@@ -57,21 +57,22 @@ const ListeF = () => {
         <Text>← Back</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('createF', { client_id })}>
+      <TouchableOpacity onPress={() => navigation.navigate('create_detail_facture', { facture_id })}>
         <Text style={{ marginBottom: 10, color: 'green' }}>Create</Text>
       </TouchableOpacity>
 
-      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Factures du client #{client_id}</Text>
+      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Detail du facture #{facture_id}</Text>
 
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-            <Text style={{ flex: 1 }}>{item.num}</Text>
-            <Text style={{ flex: 1 }}>{item.date}</Text>
+            <Text style={{ flex: 1 }}>{item.designation}</Text>
+            <Text style={{ flex: 1 }}>{item.qte}</Text>
+            <Text style={{ flex: 1 }}>{item.pu}</Text>
 
-            <TouchableOpacity onPress={() => navigation.navigate('editF', { facture: item })}>
+            <TouchableOpacity onPress={() => navigation.navigate('edit_detail_facture', { detail_facture: item })}>
               <Text style={{ color: 'blue', marginRight: 10 }}>Edit</Text>
             </TouchableOpacity>
 
@@ -85,4 +86,4 @@ const ListeF = () => {
   );
 };
 
-export default ListeF;
+export default DetailFacture;

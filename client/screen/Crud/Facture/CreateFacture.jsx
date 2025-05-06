@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const CreateF = () => {
+const CreateFacture = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { client_id } = route.params;
@@ -64,4 +64,4 @@ const CreateF = () => {
   );
 };
 
-export default CreateF;
+export default CreateFacture;

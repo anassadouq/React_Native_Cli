@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screen/Movies/Movies';
-import Liste from '../screen/Crud/Client/ListeC';
+import Liste from '../screen/Crud/Client/Client';
 import { icons } from '../constants/icons';
 
 const Tab = createBottomTabNavigator();

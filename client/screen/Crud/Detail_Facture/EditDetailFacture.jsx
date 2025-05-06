@@ -3,23 +3,24 @@ import { View, Text, TextInput, Button, Alert, StyleSheet, TouchableOpacity } fr
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const api = 'http://10.0.2.2:8000/api/facture';
+const api = 'http://10.0.2.2:8000/api/detail_facture';
 
 const EditF = ({ route, navigation }) => {
-  const { facture } = route.params;
+  const { detail_facture } = route.params;
   const queryClient = useQueryClient();
 
-  const [num, setNum] = useState(facture.num || '');
-  const [date, setDate] = useState(facture.date || '');
+  const [designation, setDesignation] = useState(detail_facture.designation || '');
+  const [qte, setQte] = useState(detail_facture.qte || '');
+  const [pu, setPu] = useState(detail_facture.pu || '');
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (updatedFacture) => {
-      const response = await axios.put(`${api}/${facture.id}`, updatedFacture);
+      const response = await axios.put(`${api}/${detail_facture.id}`, updatedFacture);
       return response.data;
     },
     onSuccess: () => {
-      Alert.alert('Succès', 'Facture mise à jour avec succès');
-      queryClient.invalidateQueries({ queryKey: ['facture', facture.client_id] });
+      Alert.alert('Succès', 'Detail mise à jour avec succès');
+      queryClient.invalidateQueries({ queryKey: ['detail_facture', detail_facture.facture_id] });
       navigation.goBack();
     },
     onError: (error) => {
@@ -29,12 +30,12 @@ const EditF = ({ route, navigation }) => {
   });
 
   const handleUpdate = () => {
-    if (!num || !date) {
+    if (!designation || !qte || !pu) {
       Alert.alert('Erreur', 'Tous les champs sont requis');
       return;
     }
 
-    mutate({ num, date, client_id: facture.client_id });
+    mutate({ designation, qte, pu, facture_id: detail_facture.facture_id });
   };
 
   return (
@@ -42,17 +43,23 @@ const EditF = ({ route, navigation }) => {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text>← Back</Text>
       </TouchableOpacity>
-      <Text style={styles.title}>Modifier la facture</Text>
+      <Text style={styles.title}>Modifier</Text>
 
       <TextInput
-        value={num}
-        onChangeText={setNum}
+        value={designation}
+        onChangeText={setDesignation}
         style={styles.input}
       />
 
       <TextInput
-        value={date}
-        onChangeText={setDate}
+        value={qte}
+        onChangeText={setQte}
+        style={styles.input}
+      />
+
+      <TextInput
+        value={pu}
+        onChangeText={setPu}
         style={styles.input}
       />
 

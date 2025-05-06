@@ -5,34 +5,32 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const api = 'http://10.0.2.2:8000/api/client';
 
-const Edit = ({ route, navigation }) => {
-  const { client } = route.params;
-
-  const [nom, setNom] = useState(client.nom);
-  const [prenom, setPrenom] = useState(client.prenom);
-  const [tel, setTel] = useState(client.tel);
+const CreateClient = ({ navigation }) => {
+  const [nom, setNom] = useState('');
+  const [prenom, setPrenom] = useState('');
+  const [tel, setTel] = useState('');
 
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (updatedClient) => {
-      const response = await axios.put(`${api}/${client.id}`, updatedClient);
+    mutationFn: async (newClient) => {
+      const response = await axios.post(api, newClient);
       return response.data;
     },
     onSuccess: () => {
-      Alert.alert('Succès', 'Client mis à jour avec succès');
+      Alert.alert('Succès', 'Client ajouté avec succès');
       queryClient.invalidateQueries({ queryKey: ['client'] });
-      navigation.goBack();
+      navigation.goBack(); // Retour à la liste
     },
     onError: (error) => {
       console.error(error);
-      Alert.alert('Erreur', "La mise à jour a échoué");
+      Alert.alert('Erreur', "Impossible d'ajouter le client");
     }
   });
 
-  const handleUpdate = () => {
+  const handleSubmit = () => {
     if (!nom || !prenom || !tel) {
-      Alert.alert('Erreur', 'Tous les champs sont requis');
+      Alert.alert('Erreur', 'Veuillez remplir tous les champs');
       return;
     }
 
@@ -44,28 +42,31 @@ const Edit = ({ route, navigation }) => {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text>← Back</Text>
       </TouchableOpacity>
-      <Text style={styles.title}>Modifier le client</Text>
+      <Text style={styles.title}>Ajouter un nouveau client</Text>
 
       <TextInput
+        placeholder="Prenom"
         value={prenom}
         onChangeText={setPrenom}
         style={styles.input}
       />
 
       <TextInput
+        placeholder="Nom"
         value={nom}
         onChangeText={setNom}
         style={styles.input}
       />
 
       <TextInput
+        placeholder="Tel"
         value={tel}
         onChangeText={setTel}
         keyboardType="phone-pad"
         style={styles.input}
       />
 
-      <Button title={isPending ? "Mise à jour..." : "Update"} onPress={handleUpdate} disabled={isPending} />
+      <Button title={isPending ? "Création en cours..." : "Create"} onPress={handleSubmit} disabled={isPending} />
     </View>
   );
 };
@@ -90,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Edit;
+export default CreateClient;

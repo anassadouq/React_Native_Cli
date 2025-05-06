@@ -4,14 +4,19 @@ import MovieDetail from '../screen/Movies/MovieDetail';
 import BottomTabs from './BottomTabs';
 
 // Client
-import ListeC from '../screen/Crud/Client/ListeC';
-import CreateC from '../screen/Crud/Client/CreateC';
-import EditC from '../screen/Crud/Client/EditC';
+import Client from '../screen/Crud/Client/Client';
+import CreateClient from '../screen/Crud/Client/CreateClient';
+import EditClient from '../screen/Crud/Client/EditClient';
 
 // Facture
-import ListeF from '../screen/Crud/Facture/ListeF';
-import CreateF from '../screen/Crud/Facture/CreateF';
-import EditF from '../screen/Crud/Facture/EditF';
+import Facture from '../screen/Crud/Facture/Facture';
+import CreateFacture from '../screen/Crud/Facture/CreateFacture';
+import EditFacture from '../screen/Crud/Facture/EditFacture';
+
+// Detail Facture
+import DetailFacture from '../screen/Crud/Detail_Facture/DetailFacture';
+import CreateDetailFacture from '../screen/Crud/Detail_Facture/CreateDetailFacture';
+import EditDetailFacture from '../screen/Crud/Detail_Facture/EditDetailFacture';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,14 +32,19 @@ export default function StackNavigator() {
             <Stack.Screen name="MovieDetail" component={MovieDetail} />
 
             {/*  Client */}
-            <Stack.Screen name="listeC" component={ListeC} />
-            <Stack.Screen name="createC" component={CreateC} />
-            <Stack.Screen name="editC" component={EditC} />
+            <Stack.Screen name="client" component={Client} />
+            <Stack.Screen name="create_client" component={CreateClient} />
+            <Stack.Screen name="edit_client" component={EditClient} />
 
             {/*  Facture */}
-            <Stack.Screen name="listeF" component={ListeF} />
-            <Stack.Screen name="createF" component={CreateF} />
-            <Stack.Screen name="editF" component={EditF} />
+            <Stack.Screen name="facture" component={Facture} />
+            <Stack.Screen name="create_facture" component={CreateFacture} />
+            <Stack.Screen name="edit_facture" component={EditFacture} />
+
+            {/*  Detail Facture */}
+            <Stack.Screen name="detail_facture" component={DetailFacture} />
+            <Stack.Screen name="create_detail_facture" component={CreateDetailFacture} />
+            <Stack.Screen name="edit_detail_facture" component={EditDetailFacture} />
         </Stack.Navigator>
     );
 }
