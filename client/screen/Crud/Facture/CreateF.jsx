@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ const CreateF = () => {
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const { mutate, isPending }  = useMutation({
     mutationFn: (newFacture) =>
       axios.post('http://10.0.2.2:8000/api/facture', newFacture),
       onSuccess: () => {
@@ -33,7 +33,7 @@ const CreateF = () => {
         return;
       }
 
-      mutation.mutate({ num, date, client_id });
+      mutate({ num, date, client_id });
     };
 
     return (
@@ -58,11 +58,8 @@ const CreateF = () => {
         style={{ borderWidth: 1, marginBottom: 10 }}
       />
 
-      <TouchableOpacity onPress={handleSubmit} disabled={mutation.isPending}>
-        <Text style={{ color: mutation.isPending ? 'gray' : 'green' }}>
-          {mutation.isPending ? 'Création...' : 'Créer'}
-        </Text>
-      </TouchableOpacity>
+      <Button title={isPending ? "Création en cours..." : "Create"} onPress={handleSubmit} disabled={isPending} />
+      
     </View>
   );
 };
