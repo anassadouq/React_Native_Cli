@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screen/Movies/Movies';
-import Liste from '../screen/Crud/Client/Client';
+import Client from '../screen/Crud/Client/Client';
 import { icons } from '../constants/icons';
 
 const Tab = createBottomTabNavigator();
@@ -31,7 +31,7 @@ export default function BottomTabs() {
             })}
         >
             <Tab.Screen name="Movies" component={Home} />
-            <Tab.Screen name="Clients" component={Liste} />
+            <Tab.Screen name="Clients" component={Client} />
         </Tab.Navigator>
     );
 }
